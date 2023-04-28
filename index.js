@@ -15,10 +15,10 @@ const con = await mysql.createConnection({
     password: "MyServer123"
 });
 
-app.get("/recent", async (req, res) => {
-    const [posts] = await con.query("SELECT * FROM post WHERE date=? ORDER BY date ASC", [new Date().toISOString().substring(0, 10)]);
+app.get("/posts", async (req, res) => {
+    const [posts] = await con.query("SELECT * FROM post ORDER BY date ASC");
 
-    res.render("recent", { posts });
+    res.render("posts", { posts });
 })
 
 app.get("/search", async (req, res) => {
