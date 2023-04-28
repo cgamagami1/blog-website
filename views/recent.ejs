@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-  <script defer src="recent.js"></script>
+  <script defer src="script.js"></script>
   <title>Blog</title>
 </head>
 <body>
@@ -25,18 +25,31 @@
     </nav>
     <main>
       <% posts.map(post => { %>
-      <div class="post">
-        <p><%= post.content %></p>
-        
-        <% if (post.photoURL) { %>
-        <img src="<%= post.photoURL %>" alt="post photo">
-        <% } %>
+        <div class="post">
+          <p><%= post.content %></p>
 
-        <div>
-          <span><%= post.location %></span>
-          <span><%= post.date.toISOString().substring(0, 10) %></span>
+          <% if (post.photoURL) { %>
+            <img src="<%= post.photoURL %>" alt="post photo">
+          <% } %>
+
+          <div class="post-footer" id="<%= post.postID %>">
+            <div>
+              <span><%= post.location %></span>
+              <span><%= post.date.toISOString().substring(0, 10) %></span>
+            </div>
+            <div>
+              <span class="post-button edit">Edit</span>
+              <span class="post-button delete">Delete</span>
+            </div>
+          </div>
+          <form action="/update" method="POST" class="edit-post-form hidden">
+            <textarea name="content" placeholder="Post contents..."><%= post.content %></textarea>
+            <input type="checkbox" class="hidden" checked name="postID" value="<%= post.postID %>">
+            <input type="text" placeholder="Photo URL..." name="photoURL" value="<%= post.photoURL %>">
+            <input type="text" placeholder="Location..." name="location" value="<%= post.location %>">
+            <input type="submit">
+          </form>
         </div>
-      </div>
       <% }) %>
     </main>
   </div>

@@ -6,6 +6,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.use( express.static( "public" ) );
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json({type: '*/*'}));
 
 const con = await mysql.createConnection({
     host: 'localhost',
@@ -15,7 +16,7 @@ const con = await mysql.createConnection({
 });
 
 app.get("/recent", async (req, res) => {
-    const [posts] = await con.query("SELECT * FROM post WHERE date=?", [new Date().toISOString().substring(0, 10)]);
+    const [posts] = await con.query("SELECT * FROM post WHERE date=? ORDER BY date ASC", [new Date().toISOString().substring(0, 10)]);
 
     res.render("recent", { posts });
 })
@@ -26,7 +27,7 @@ app.get("/search", async (req, res) => {
         return;
     }
     
-    const [posts] = await con.query("SELECT * FROM post WHERE content LIKE ?", ['%' + req.query.content + '%']);
+    const [posts] = await con.query("SELECT * FROM post WHERE content LIKE ? ORDER BY date ASC", ['%' + req.query.content + '%']);
 
     res.render("search", { posts });
 })
@@ -46,6 +47,16 @@ app.post("/new", (req, res) => {
     con.query("INSERT INTO post (content, photoURL, date, location) VALUES (?)", [values]);
     res.render("new");
 })
+
+app.post("/delete", async (req, res) => {
+    await con.query("DELETE FROM post WHERE postID=?", [req.body.postID]);
+    res.send("success");
+})
+
+app.post("/update", async (req, res) => {
+    await con.query("UPDATE post SET ? WHERE postID=?", [{ content: req.body.content, photoURL: req.body.photoURL, location: req.body.location }, req.body.postID]);
+    res.redirect(req.headers.referer);
+});
 
 app.listen(3000, () => {
     console.log('App listening on port 3000!');

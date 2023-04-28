@@ -74,6 +74,27 @@ textarea {
     width: 50%;
 }
 
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-button {
+    color: #7c0d9b;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .new-post-card h2 {
     margin: 0;
+}
+
+.edit-post-form {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.hidden {
+    display: none;
 }
