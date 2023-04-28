@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="recent.js"></script>
+  <title>Blog</title>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <ul>
+        <li>
+          <a class="nav-item" href="/recent">Recent Posts</a>
+        </li>
+        <li>
+          <a class="nav-item" href="/search">Search Posts</a>
+        </li>
+        <li>
+          <a class="nav-item" href="/new">New Post</a>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <% posts.map(post => { %>
+      <div class="post">
+        <p><%= post.content %></p>
+        
+        <% if (post.photoURL) { %>
+        <img src="<%= post.photoURL %>" alt="post photo">
+        <% } %>
+
+        <div>
+          <span><%= post.location %></span>
+          <span><%= post.date.toISOString().substring(0, 10) %></span>
+        </div>
+      </div>
+      <% }) %>
+    </main>
+  </div>
+</body>
+</html>
