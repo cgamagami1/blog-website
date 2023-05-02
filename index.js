@@ -12,7 +12,7 @@ const con = await mysql.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'blog-website',
-    password: "MyServer123"
+    password: "" //your password here
 });
 
 const formatResults = (results) => {
