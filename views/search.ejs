@@ -19,7 +19,7 @@
           <a class="nav-item" href="/search">Search Posts</a>
         </li>
         <li>
-          <a class="nav-item" href="/new">New Post</a>
+          <a class="nav-item" href="/newpost">New Post</a>
         </li>
       </ul>
     </nav>
@@ -31,29 +31,50 @@
       
       <% posts.map(post => { %>
         <div class="post">
-          <p><%= post.content %></p>
+          <p><%= post.postContent %></p>
 
           <% if (post.photoURL) { %>
             <img src="<%= post.photoURL %>" alt="post photo">
           <% } %>
 
-          <div class="post-footer" id="<%= post.postID %>">
+          <div class="post-footer">
             <div>
               <span><%= post.location %></span>
-              <span><%= post.date.toISOString().substring(0, 10) %></span>
+              <span><%= post.postDate.toISOString().substring(0, 10) %></span>
             </div>
             <div>
-              <span class="post-button edit">Edit</span>
-              <span class="post-button delete">Delete</span>
+              <button class="post-button show-comments">Show Comments</button>
+              <button class="post-button edit">Edit</button>
+              <form action="/deletepost/<%= post.postID %>" method="POST" class="inline-form">
+                <button class="post-button">Delete</button>
+              </form>
             </div>
           </div>
-          <form action="/update" method="POST" class="edit-post-form hidden">
-            <textarea name="content" placeholder="Post contents..."><%= post.content %></textarea>
+
+          <form action="/updatepost/<%= post.postID %>" method="POST" class="post-form hidden">
+            <textarea name="content" placeholder="Post contents..."><%= post.postContent %></textarea>
             <input type="checkbox" class="hidden" checked name="postID" value="<%= post.postID %>">
             <input type="text" placeholder="Photo URL..." name="photoURL" value="<%= post.photoURL %>">
             <input type="text" placeholder="Location..." name="location" value="<%= post.location %>">
-            <input type="submit">
+            <input class="post-button" type="submit" value="Edit">
           </form>
+
+          <div class="hidden">
+            <form action="/newcomment/<%= post.postID %>" method="POST" class="post-form">
+              <input type="text" placeholder="Add comment..." name="content">
+              <input class="post-button" type="submit" value="Add">
+            </form>
+
+            <% post.comments.map(comment => { %>
+              <div class="comment">
+                <p><%= comment.commentContent %></p>
+                <span><%= comment.commentDate.toISOString().substring(0, 10) %></span>
+                <form action="/deletecomment/<%= comment.commentID %>" method="POST" class="inline-form">
+                  <button class="post-button">Delete</button>
+                </form>
+              </div>
+            <% }) %>
+          </div>
         </div>
       <% }) %>
     </main>

@@ -58,7 +58,7 @@ main {
     border-radius: .25rem;
 }
 
-.search-post-card input, .new-post-card input {
+input {
     height: 2rem;
 }
 
@@ -81,15 +81,19 @@ textarea {
 
 .post-button {
     color: #7c0d9b;
-    text-decoration: underline;
     cursor: pointer;
+}
+
+.inline-form {
+    display: inline-block;
 }
 
 .new-post-card h2 {
     margin: 0;
 }
 
-.edit-post-form {
+.post-form {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: .5rem;
@@ -97,4 +101,14 @@ textarea {
 
 .hidden {
     display: none;
+}
+
+.comment {
+    border: 1px solid black;
+    margin-top: 1.5rem;
+    padding: 1rem;
+}
+
+.comment p {
+    margin-bottom: .5rem;
 }
